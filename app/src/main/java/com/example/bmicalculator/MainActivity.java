@@ -16,6 +16,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import java.text.DecimalFormat;
+
 public class MainActivity extends AppCompatActivity {
 
     TextView resultText;
@@ -87,10 +89,23 @@ public class MainActivity extends AppCompatActivity {
         // BMI formula = weight in kg divided by height in meters squared
         double bmi = weight / (heightInMeters * heightInMeters);
 
-        // We must convert the decimal/double into a String for our TextView
-        String bmiTextResult = String.valueOf(bmi);
+        DecimalFormat myDecimalFormatter = new DecimalFormat("0.00");
+        String bmiTextResult = myDecimalFormatter.format(bmi);
 
-        resultText.setText(bmiTextResult);
+        String fullResultString;
+        if (bmi < 18.5) {
+            // Display underweight
+            fullResultString = bmiTextResult + " - You are underweight";
+        } else if (bmi > 25) {
+            // Display Overweight
+            fullResultString = bmiTextResult + " - You are overweight";
+
+        } else {
+            // Display healthy
+            fullResultString = bmiTextResult + " - You are healthy weight";
+        }
+
+        resultText.setText(fullResultString);
 
     }
 

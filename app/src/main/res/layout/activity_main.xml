@@ -73,7 +73,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        android:hint="Weight"
+        android:hint="Weight (kg)"
         android:inputType="number" />
 
     <Button
@@ -84,11 +84,10 @@
         android:text="Calculate" />
 
     <TextView
-        android:id="@+id/text_view_healthy"
+        android:id="@+id/text_view_result"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="24dp"
-        android:text="23.6 - You are a healthy weight" />
-
+        />
 
 </LinearLayout>

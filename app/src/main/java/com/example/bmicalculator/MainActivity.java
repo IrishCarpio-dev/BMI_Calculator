@@ -64,12 +64,13 @@ public class MainActivity extends AppCompatActivity {
         calculateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                calculateBmi();
+                double bmiResult = calculateBmi();
+                displayResult(bmiResult);
             }
         });
     }
 
-    private void calculateBmi() {
+    private double calculateBmi() {
         String ageText = ageEditText.getText().toString();
         String feetText = feetEditText.getText().toString();
         String inchesText = inchesEditText.getText().toString();
@@ -87,8 +88,10 @@ public class MainActivity extends AppCompatActivity {
         double heightInMeters = totalInches * 0.0254;
 
         // BMI formula = weight in kg divided by height in meters squared
-        double bmi = weight / (heightInMeters * heightInMeters);
+        return weight / (heightInMeters * heightInMeters);
 
+    }
+    private void displayResult(double bmi){
         DecimalFormat myDecimalFormatter = new DecimalFormat("0.00");
         String bmiTextResult = myDecimalFormatter.format(bmi);
 
@@ -106,7 +109,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         resultText.setText(fullResultString);
-
     }
 
 }

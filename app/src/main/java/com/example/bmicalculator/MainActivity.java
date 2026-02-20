@@ -20,8 +20,9 @@ import java.text.DecimalFormat;
 
 public class MainActivity extends AppCompatActivity {
 
-    TextView resultText;
-    Button calculateButton;
+    // Class Variables; also are called 'Fields'
+    private TextView resultText;
+    private Button calculateButton;
     private RadioButton rButtonMale;
     private RadioButton rButtonFemale;
     private EditText ageEditText;
@@ -37,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         findViews();
         setupButtonClickListener();
 
-        String popUpText = "Wow, I can make an alert pop up! - wooo";
+        String popUpText = "Loading successful!";
         Toast.makeText(this, popUpText, Toast.LENGTH_LONG).show();
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
@@ -48,8 +49,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void findViews() {
-
-        resultText = findViewById(id.text_view_healthy);
+        resultText = findViewById(id.text_view_result);
         rButtonMale = findViewById(id.radio_button_male);
         rButtonFemale = findViewById(id.radio_button_female);
         ageEditText = findViewById(id.edit_text_age);
@@ -64,19 +64,27 @@ public class MainActivity extends AppCompatActivity {
         calculateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                calculateBmi();
+                double bmiResult = calculateBmi();
+
+                String ageText = ageEditText.getText().toString();
+                int age = Integer.parseInt(ageText);
+
+                if(age >= 18){
+                    displayResult(bmiResult);
+                } else {
+                    displayGuidance(bmiResult);
+                }
             }
         });
     }
 
-    private void calculateBmi() {
-        String ageText = ageEditText.getText().toString();
+
+    private double calculateBmi() {
         String feetText = feetEditText.getText().toString();
         String inchesText = inchesEditText.getText().toString();
         String weightText = weightEditText.getText().toString();
 
         // Converting the number 'String' into 'int' variables
-        int age = Integer.parseInt(ageText);
         int feet = Integer.parseInt(feetText);
         int inches = Integer.parseInt(inchesText);
         int weight = Integer.parseInt(weightText);
@@ -87,8 +95,10 @@ public class MainActivity extends AppCompatActivity {
         double heightInMeters = totalInches * 0.0254;
 
         // BMI formula = weight in kg divided by height in meters squared
-        double bmi = weight / (heightInMeters * heightInMeters);
+        return weight / (heightInMeters * heightInMeters);
 
+    }
+    private void displayResult(double bmi){
         DecimalFormat myDecimalFormatter = new DecimalFormat("0.00");
         String bmiTextResult = myDecimalFormatter.format(bmi);
 
@@ -106,7 +116,24 @@ public class MainActivity extends AppCompatActivity {
         }
 
         resultText.setText(fullResultString);
+    }
 
+    private void displayGuidance(double bmi) {
+        DecimalFormat myDecimalFormatter = new DecimalFormat("0.00");
+        String bmiTextResult = myDecimalFormatter.format(bmi);
+
+        String fullResultString;
+        if (rButtonMale.isChecked()){
+            // Display boy guidance
+            fullResultString = bmiTextResult + " - You're under 18, place consult with your doctor for the healthy range for boys";
+        } else if (rButtonFemale.isChecked()) {
+            // Display girl guidance
+            fullResultString = bmiTextResult + " - You're under 18, place consult with your doctor for the healthy range for girls";
+        }else {
+            // General guidance
+            fullResultString = bmiTextResult + " - You're under 18, place consult with your doctor for the healthy range";
+        }
+        resultText.setText(fullResultString);
     }
 
 }
